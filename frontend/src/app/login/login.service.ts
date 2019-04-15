@@ -5,14 +5,14 @@ import { HttpClient } from '@angular/common/http';
 	providedIn: 'root'
 })
 export class LoginService {
-	public authServerBaseUrl = 'http://localhost:4200';
+	public authServerBaseUrl = 'https://example.com';
 	public config = {
 		"linkedin":{
 			"clientId":"client-id",
 			"redirectURI" : this.authServerBaseUrl+"/login/linkdin"
 		},
 		"facebook":{
-			"clientId":"client-id",
+			"clientId":"app-id",
 			"redirectURI" : this.authServerBaseUrl+"/login"
 		},
 		"google":{
@@ -35,6 +35,14 @@ export class LoginService {
 	}
 
 	serverfacebookCodeSend(code){
-		return this.http.post<any>("localhost:3000/facebook/login",{'code':code});
+		return this.http.post<any>("http://localhost:3000/facebook/login",{'code':code,'redirectURI':this.config.facebook.redirectURI});
+	}
+
+	servergoogleCodeSend(code){
+		return this.http.post<any>("http://localhost:3000/google/login",{'code':code,'redirectURI':this.config.google.redirectURI});
+	}
+
+	serverlinkedinCodeSend(code){
+		return this.http.post<any>("http://localhost:3000/linkedin/login",{'code':code,'redirectURI':this.config.linkedin.redirectURI});
 	}
 }
